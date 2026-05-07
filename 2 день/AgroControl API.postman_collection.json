@@ -1,0 +1,2130 @@
+{
+	"info": {
+		"_postman_id": "85cc9f21-2755-4a5c-b2aa-9d4144032b7e",
+		"name": "AgroControl API",
+		"description": "API для информационной системы управления производством AgroControl",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Аутентификация",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Username\": \"tech.ivanov\",\n    \"Password\": \"hash123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Авторизация пользователя. Получение JWT токена."
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Username\": \"new.user\",\n    \"Password\": \"password123\",\n    \"FullName\": \"Новый Пользователь\",\n    \"Email\": \"new@agrocontrol.ru\",\n    \"Phone\": \"+7 (495) 123-45-99\",\n    \"Role\": \"observer\",\n    \"Department\": \"Отдел качества\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						},
+						"description": "Регистрация нового пользователя"
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"UserId\": 1,\n    \"OldPassword\": \"hash123\",\n    \"NewPassword\": \"newhash123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/changepassword",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"changepassword"
+							]
+						},
+						"description": "Смена пароля пользователя"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2. Пользователи",
+			"item": [
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						},
+						"description": "Получение списка всех пользователей"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						},
+						"description": "Получение пользователя по ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"test.user\",\n    \"password_hash\": \"test123\",\n    \"full_name\": \"Тестовый Пользователь\",\n    \"role\": \"operator\",\n    \"email\": \"test@agrocontrol.ru\",\n    \"phone\": \"+7 (495) 123-45-88\",\n    \"is_active\": true,\n    \"department\": \"Цех №1\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						},
+						"description": "Создание нового пользователя"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"username\": \"tech.ivanov\",\n    \"password_hash\": \"hash123\",\n    \"full_name\": \"Иванов Иван Петрович\",\n    \"role\": \"technologist\",\n    \"email\": \"ivan.ivanov@agrocontrol.ru\",\n    \"phone\": \"+7 (495) 123-45-01\",\n    \"is_active\": true,\n    \"department\": \"Технологический отдел\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						},
+						"description": "Обновление данных пользователя"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"20"
+							]
+						},
+						"description": "Удаление пользователя"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "3. Продукция",
+			"item": [
+				{
+					"name": "Get All Products",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/products",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products"
+							]
+						},
+						"description": "Получение списка всех продуктов"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Active Products",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/products/active",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"active"
+							]
+						},
+						"description": "Получение списка активных продуктов"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/products/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"1"
+							]
+						},
+						"description": "Получение продукта по ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product Recipes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/products/1/recipes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"1",
+								"recipes"
+							]
+						},
+						"description": "Получение всех рецептур продукта"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product Tech Cards",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/products/1/techcards",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"1",
+								"techcards"
+							]
+						},
+						"description": "Получение всех техкарт продукта"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"NEW-001\",\n    \"name\": \"Новый продукт\",\n    \"product_type\": \"herbicide\",\n    \"release_form\": \"liquid\",\n    \"status\": \"draft\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/products",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products"
+							]
+						},
+						"description": "Создание нового продукта"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"code\": \"HERB-A\",\n    \"name\": \"Гербицид А обновленный\",\n    \"product_type\": \"herbicide\",\n    \"release_form\": \"liquid\",\n    \"status\": \"active\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/products/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"1"
+							]
+						},
+						"description": "Обновление продукта"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/products/20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"20"
+							]
+						},
+						"description": "Удаление продукта (soft delete - статус archived)"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4. Рецептуры",
+			"item": [
+				{
+					"name": "Get All Recipes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/recipes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"recipes"
+							]
+						},
+						"description": "Получение списка всех рецептур"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Active Recipes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/recipes/active",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"recipes",
+								"active"
+							]
+						},
+						"description": "Получение списка активных рецептур"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Recipe By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/recipes/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"recipes",
+								"1"
+							]
+						},
+						"description": "Получение рецептуры по ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Recipe Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/recipes/1/details",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"recipes",
+								"1",
+								"details"
+							]
+						},
+						"description": "Получение детальной информации о рецептуре с компонентами"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Recipe",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"product_id\": 1,\n    \"description\": \"Новая рецептура\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/recipes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"recipes"
+							]
+						},
+						"description": "Создание новой рецептуры"
+					},
+					"response": []
+				},
+				{
+					"name": "Activate Recipe",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ApprovedBy\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/recipes/1/activate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"recipes",
+								"1",
+								"activate"
+							]
+						},
+						"description": "Активация рецептуры (проверка суммы компонентов = 100%)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Recipe",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 3,\n    \"product_id\": 1,\n    \"version\": 2,\n    \"status\": \"draft\",\n    \"description\": \"Обновленная рецептура\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/recipes/3",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"recipes",
+								"3"
+							]
+						},
+						"description": "Обновление рецептуры"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Recipe",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/recipes/3",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"recipes",
+								"3"
+							]
+						},
+						"description": "Удаление рецептуры"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "5. Компоненты рецептур",
+			"item": [
+				{
+					"name": "Get All Recipe Components",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/recipecomponents",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"recipecomponents"
+							]
+						},
+						"description": "Получение списка всех компонентов рецептур"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Components By Recipe",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/recipecomponents/byrecipe/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"recipecomponents",
+								"byrecipe",
+								"1"
+							]
+						},
+						"description": "Получение компонентов по ID рецептуры"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Recipe Component",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"recipe_id\": 1,\n    \"material_id\": 1,\n    \"percentage\": 50.5,\n    \"load_order\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/recipecomponents",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"recipecomponents"
+							]
+						},
+						"description": "Добавление компонента в рецептуру"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Recipe Component",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/recipecomponents/5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"recipecomponents",
+								"5"
+							]
+						},
+						"description": "Удаление компонента из рецептуры"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "6. Технологические карты",
+			"item": [
+				{
+					"name": "Get All Tech Cards",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/techcards",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"techcards"
+							]
+						},
+						"description": "Получение списка всех техкарт"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Active Tech Cards",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/techcards/active",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"techcards",
+								"active"
+							]
+						},
+						"description": "Получение списка активных техкарт"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tech Card By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/techcards/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"techcards",
+								"1"
+							]
+						},
+						"description": "Получение техкарты по ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tech Card Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/techcards/1/details",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"techcards",
+								"1",
+								"details"
+							]
+						},
+						"description": "Получение детальной информации о техкарте с шагами"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Tech Card",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"product_id\": 1,\n    \"description\": \"Новая технологическая карта\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/techcards",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"techcards"
+							]
+						},
+						"description": "Создание новой техкарты"
+					},
+					"response": []
+				},
+				{
+					"name": "Activate Tech Card",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ApprovedBy\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/techcards/1/activate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"techcards",
+								"1",
+								"activate"
+							]
+						},
+						"description": "Активация техкарты"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Tech Card",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 3,\n    \"product_id\": 1,\n    \"version\": 1,\n    \"status\": \"draft\",\n    \"description\": \"Обновленная техкарта\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/techcards/3",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"techcards",
+								"3"
+							]
+						},
+						"description": "Обновление техкарты"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Tech Card",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/techcards/3",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"techcards",
+								"3"
+							]
+						},
+						"description": "Удаление техкарты"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "7. Шаги техкарт",
+			"item": [
+				{
+					"name": "Get All Tech Card Steps",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/techcardsteps",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"techcardsteps"
+							]
+						},
+						"description": "Получение списка всех шагов техкарт"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Steps By Tech Card",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/techcardsteps/bycard/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"techcardsteps",
+								"bycard",
+								"1"
+							]
+						},
+						"description": "Получение шагов по ID техкарты"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Tech Card Step",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"card_id\": 1,\n    \"step_name\": \"Новый шаг\",\n    \"planned_temp_c\": 90,\n    \"planned_duration_min\": 30,\n    \"planned_pressure_bar\": 4.0,\n    \"is_mandatory\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/techcardsteps",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"techcardsteps"
+							]
+						},
+						"description": "Добавление шага в техкарту"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "8. Производственные заказы",
+			"item": [
+				{
+					"name": "Get All Orders",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders"
+							]
+						},
+						"description": "Получение списка всех заказов"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Active Orders",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/orders/active",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								"active"
+							]
+						},
+						"description": "Получение активных заказов"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/orders/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								"1"
+							]
+						},
+						"description": "Получение заказа по ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/orders/1/details",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								"1",
+								"details"
+							]
+						},
+						"description": "Получение детальной информации о заказе"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"recipe_id\": 1,\n    \"planned_quantity_kg\": 1500,\n    \"planned_start_date\": \"2025-03-15\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders"
+							]
+						},
+						"description": "Создание нового заказа"
+					},
+					"response": []
+				},
+				{
+					"name": "Start Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/orders/1/start",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								"1",
+								"start"
+							]
+						},
+						"description": "Запуск заказа (автоматически создается партия)"
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/orders/1/cancel",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								"1",
+								"cancel"
+							]
+						},
+						"description": "Отмена заказа"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Order",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 3,\n    \"order_number\": \"PO-2403\",\n    \"recipe_id\": 1,\n    \"planned_quantity_kg\": 2000,\n    \"status\": \"planned\",\n    \"planned_start_date\": \"2025-03-20\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/orders/3",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								"3"
+							]
+						},
+						"description": "Обновление заказа"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Order",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/orders/3",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								"3"
+							]
+						},
+						"description": "Удаление заказа (только planned)"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "9. Производственные партии",
+			"item": [
+				{
+					"name": "Get All Batches",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/batches",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"batches"
+							]
+						},
+						"description": "Получение списка всех партий"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Active Batches",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/batches/active",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"batches",
+								"active"
+							]
+						},
+						"description": "Получение активных партий (running/paused)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Batch By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/batches/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"batches",
+								"1"
+							]
+						},
+						"description": "Получение партии по ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Batch Steps",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/batches/1/steps",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"batches",
+								"1",
+								"steps"
+							]
+						},
+						"description": "Получение шагов выполнения партии"
+					},
+					"response": []
+				},
+				{
+					"name": "Start Batch",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/batches/3/start",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"batches",
+								"3",
+								"start"
+							]
+						},
+						"description": "Запуск партии"
+					},
+					"response": []
+				},
+				{
+					"name": "Pause Batch",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/batches/3/pause",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"batches",
+								"3",
+								"pause"
+							]
+						},
+						"description": "Приостановка партии"
+					},
+					"response": []
+				},
+				{
+					"name": "Resume Batch",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/batches/3/resume",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"batches",
+								"3",
+								"resume"
+							]
+						},
+						"description": "Возобновление партии"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "10. Выполнение шагов",
+			"item": [
+				{
+					"name": "Start Step",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/batchsteps/1/start",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"batchsteps",
+								"1",
+								"start"
+							]
+						},
+						"description": "Начало выполнения шага"
+					},
+					"response": []
+				},
+				{
+					"name": "Complete Step",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ActualTempC\": 79.8,\n    \"ActualDurationMin\": 47,\n    \"ActualPressureBar\": 3.2,\n    \"OperatorComment\": \"Температура на грани допуска\",\n    \"Severity\": \"warning\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/batchsteps/1/complete",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"batchsteps",
+								"1",
+								"complete"
+							]
+						},
+						"description": "Завершение шага с вводом фактических параметров"
+					},
+					"response": []
+				},
+				{
+					"name": "Fix Deviation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ResolvedBy\": 1,\n    \"FixComment\": \"Отрегулировано давление\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/batchsteps/1/fix-deviation",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"batchsteps",
+								"1",
+								"fix-deviation"
+							]
+						},
+						"description": "Устранение отклонения"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "11. Лабораторные испытания",
+			"item": [
+				{
+					"name": "Get All Tests",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/qualitytests",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"qualitytests"
+							]
+						},
+						"description": "Получение списка всех испытаний"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Pending Tests",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/qualitytests/pending",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"qualitytests",
+								"pending"
+							]
+						},
+						"description": "Получение испытаний, ожидающих анализа"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tests By Batch",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/qualitytests/batch/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"qualitytests",
+								"batch",
+								"1"
+							]
+						},
+						"description": "Получение испытаний по партии"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Test",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"BatchId\": 3,\n    \"SampleType\": \"finished_product\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/qualitytests/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"qualitytests",
+								"create"
+							]
+						},
+						"description": "Создание нового испытания"
+					},
+					"response": []
+				},
+				{
+					"name": "Complete Test",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Comment\": \"Анализ завершен\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/qualitytests/1/complete",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"qualitytests",
+								"1",
+								"complete"
+							]
+						},
+						"description": "Завершение испытания"
+					},
+					"response": []
+				},
+				{
+					"name": "Make Decision",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Decision\": \"approved\",\n    \"Comment\": \"Соответствует норме\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/qualitytests/1/decision",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"qualitytests",
+								"1",
+								"decision"
+							]
+						},
+						"description": "Принятие решения по испытанию (approved/blocked)"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "12. Результаты испытаний",
+			"item": [
+				{
+					"name": "Get All Test Results",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/testresults",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"testresults"
+							]
+						},
+						"description": "Получение всех результатов испытаний"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Results By Test",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/testresults/bytest/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"testresults",
+								"bytest",
+								"1"
+							]
+						},
+						"description": "Получение результатов по ID испытания"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Batch Results",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"TestId\": 1,\n    \"Comment\": \"Результаты анализа\",\n    \"Results\": [\n        {\n            \"ParameterName\": \"концентрация\",\n            \"MeasuredValue\": \"98.5\",\n            \"StandardValue\": \"97\",\n            \"Unit\": \"%\",\n            \"Result\": \"pass\"\n        },\n        {\n            \"ParameterName\": \"pH\",\n            \"MeasuredValue\": \"6.8\",\n            \"StandardValue\": \"6.5-7.0\",\n            \"Unit\": \"\",\n            \"Result\": \"pass\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/testresults/batch",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"testresults",
+								"batch"
+							]
+						},
+						"description": "Массовое добавление результатов испытаний"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "13. Отчеты и дашборд",
+			"item": [
+				{
+					"name": "Dashboard Stats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/dashboard/stats",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"dashboard",
+								"stats"
+							]
+						},
+						"description": "Получение статистики для главной страницы"
+					},
+					"response": []
+				},
+				{
+					"name": "Recent Events",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/dashboard/recent-events?count=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"dashboard",
+								"recent-events"
+							],
+							"query": [
+								{
+									"key": "count",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Получение последних событий"
+					},
+					"response": []
+				},
+				{
+					"name": "Active Batches Summary",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/dashboard/active-batches-summary",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"dashboard",
+								"active-batches-summary"
+							]
+						},
+						"description": "Сводка по активным партиям"
+					},
+					"response": []
+				},
+				{
+					"name": "Batch Report",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reports/batches?fromDate=2025-03-01&toDate=2025-03-31",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reports",
+								"batches"
+							],
+							"query": [
+								{
+									"key": "fromDate",
+									"value": "2025-03-01"
+								},
+								{
+									"key": "toDate",
+									"value": "2025-03-31"
+								}
+							]
+						},
+						"description": "Отчет по партиям за период"
+					},
+					"response": []
+				},
+				{
+					"name": "Deviation Report",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reports/deviations?severity=warning",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reports",
+								"deviations"
+							],
+							"query": [
+								{
+									"key": "severity",
+									"value": "warning"
+								}
+							]
+						},
+						"description": "Отчет по отклонениям"
+					},
+					"response": []
+				},
+				{
+					"name": "Quality Report",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reports/quality?fromDate=2025-03-01&toDate=2025-03-31",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reports",
+								"quality"
+							],
+							"query": [
+								{
+									"key": "fromDate",
+									"value": "2025-03-01"
+								},
+								{
+									"key": "toDate",
+									"value": "2025-03-31"
+								}
+							]
+						},
+						"description": "Отчет по качеству продукции"
+					},
+					"response": []
+				},
+				{
+					"name": "Equipment Report",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reports/equipment?fromDate=2025-03-01&toDate=2025-03-31",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reports",
+								"equipment"
+							],
+							"query": [
+								{
+									"key": "fromDate",
+									"value": "2025-03-01"
+								},
+								{
+									"key": "toDate",
+									"value": "2025-03-31"
+								}
+							]
+						},
+						"description": "Отчет по оборудованию"
+					},
+					"response": []
+				},
+				{
+					"name": "Recipes Usage Report",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reports/recipes-usage",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reports",
+								"recipes-usage"
+							]
+						},
+						"description": "Отчет по использованию рецептур"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:53427/api",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
