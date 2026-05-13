@@ -1,0 +1,73 @@
+﻿<Page x:Class="LaboratoryMD.Views.RawMaterialsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="RawMaterialsPage"
+      Background="#F5F5F5">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Контроль качества сырья" 
+                   FontSize="28" FontWeight="Bold" Margin="0,0,0,20"/>
+
+        <!-- Фильтры -->
+        <Border Grid.Row="1" Background="White" CornerRadius="10" 
+                Padding="15" Margin="0,0,0,15">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Фильтр по статусу:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <ComboBox x:Name="cmbStatusFilter" Width="150" Height="30"
+                          SelectionChanged="CmbStatusFilter_SelectionChanged">
+                    <ComboBoxItem Content="Все" IsSelected="True"/>
+                    <ComboBoxItem Content="Ожидает контроля"/>
+                    <ComboBoxItem Content="В работе"/>
+                    <ComboBoxItem Content="Разрешено"/>
+                    <ComboBoxItem Content="Заблокировано"/>
+                </ComboBox>
+                <Button x:Name="btnRefresh" Content="🔄 Обновить" 
+                        Width="100" Height="35" Margin="20,0,0,0"
+                        Click="BtnRefresh_Click"/>
+                <TextBlock Text="Всего партий:" Margin="20,0,0,0" VerticalAlignment="Center"/>
+                <TextBlock x:Name="txtTotalCount" Text="0" FontWeight="Bold" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Таблица партий сырья -->
+        <DataGrid x:Name="dgRawMaterials" Grid.Row="2" 
+                  AutoGenerateColumns="False" 
+                  IsReadOnly="True" 
+                  SelectionMode="Single"
+                  RowHeaderWidth="0"
+                  Height="450"
+                  AlternatingRowBackground="#F9F9F9"
+                  MouseDoubleClick="DgRawMaterials_MouseDoubleClick">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Width="50" Binding="{Binding id}"/>
+                <DataGridTextColumn Header="Номер партии" Width="120" Binding="{Binding batch_number}"/>
+                <DataGridTextColumn Header="Материал" Width="200" Binding="{Binding material_name}"/>
+                <DataGridTextColumn Header="Поставщик" Width="150" Binding="{Binding supplier}"/>
+                <DataGridTextColumn Header="Дата поступления" Width="150" Binding="{Binding receipt_date}"/>
+                <DataGridTextColumn Header="Количество" Width="100" Binding="{Binding quantity}"/>
+                <DataGridTextColumn Header="Статус контроля" Width="150" Binding="{Binding test_status}"/>
+                <DataGridTemplateColumn Header="Действие" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button x:Name="btnTest" Content="🔬" 
+                                    Width="35" Height="30"
+                                    Background="#2196F3" Foreground="White"
+                                    Click="BtnTest_Click" Tag="{Binding}"
+                                    ToolTip="Проверить"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <TextBlock x:Name="txtInfo" Grid.Row="3" 
+                   Foreground="Gray" Margin="0,10,0,0" FontSize="12"/>
+    </Grid>
+</Page>
