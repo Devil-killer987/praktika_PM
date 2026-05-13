@@ -1,0 +1,88 @@
+﻿<Window x:Class="TecnologApp.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="АгроКонтроль - Модуль технолога" 
+        Height="700" Width="1200" 
+        WindowStartupLocation="CenterScreen">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Боковое меню -->
+        <Border Grid.Column="0" Background="#2C3E50">
+            <StackPanel>
+                <!-- Заголовок -->
+                <Border Background="#1A252F" Padding="10">
+                    <TextBlock Text="АгроКонтроль" 
+                               FontSize="18" FontWeight="Bold" 
+                               Foreground="White" HorizontalAlignment="Center"/>
+                </Border>
+
+                <!-- Информация о пользователе -->
+                <Border Background="#34495E" Padding="10" Margin="0,10,0,10">
+                    <StackPanel>
+                        <TextBlock x:Name="txtUserName" Text="Иванов И.П." 
+                                   Foreground="White" FontSize="14" FontWeight="Bold"/>
+                        <TextBlock x:Name="txtUserRole" Text="Технолог" 
+                                   Foreground="#BDC3C7" FontSize="12"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Кнопки меню -->
+                <StackPanel>
+                    <Button x:Name="btnDashboard" Content=" Главная" 
+                            FontSize="14" Height="45" HorizontalAlignment="Stretch"
+                            Cursor="Hand" Click="BtnDashboard_Click"
+                            Background="Transparent" Foreground="White"
+                            BorderThickness="0"/>
+                    <Button x:Name="btnProducts" Content=" Продукция" 
+                            FontSize="14" Height="45" HorizontalAlignment="Stretch"
+                            Cursor="Hand" Click="BtnProducts_Click"
+                            Background="Transparent" Foreground="White"
+                            BorderThickness="0"/>
+                    <Button x:Name="btnRecipes" Content=" Рецептуры" 
+                            FontSize="14" Height="45" HorizontalAlignment="Stretch"
+                            Cursor="Hand" Click="BtnRecipes_Click"
+                            Background="Transparent" Foreground="White"
+                            BorderThickness="0"/>
+                    <Button x:Name="btnTechCards" Content=" Технологические карты" 
+                            FontSize="14" Height="45" HorizontalAlignment="Stretch"
+                            Cursor="Hand" Click="BtnTechCards_Click"
+                            Background="Transparent" Foreground="White"
+                            BorderThickness="0"/>
+                    <Button x:Name="btnOrders" Content=" Производственные заказы" 
+                            FontSize="14" Height="45" HorizontalAlignment="Stretch"
+                            Cursor="Hand" Click="BtnOrders_Click"
+                            Background="Transparent" Foreground="White"
+                            BorderThickness="0"/>
+                    <Button x:Name="btnBatches" Content=" Производственные партии" 
+                            FontSize="14" Height="45" HorizontalAlignment="Stretch"
+                            Cursor="Hand" Click="BtnBatches_Click"
+                            Background="Transparent" Foreground="White"
+                            BorderThickness="0"/>
+                    <Button x:Name="btnReports" Content=" Отчеты" 
+                            FontSize="14" Height="45" HorizontalAlignment="Stretch"
+                            Cursor="Hand" Click="BtnReports_Click"
+                            Background="Transparent" Foreground="White"
+                            BorderThickness="0"/>
+                </StackPanel>
+
+                <!-- Кнопка выхода -->
+                <Border Height="1" Background="#34495E" Margin="10,20,10,10"/>
+                <Button x:Name="btnLogout" Content=" Выход" 
+                        FontSize="14" Height="45" HorizontalAlignment="Stretch"
+                        Cursor="Hand" Click="BtnLogout_Click"
+                        Background="Transparent" Foreground="White"
+                        BorderThickness="0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Основная область контента -->
+        <Border Grid.Column="1" Background="#F5F5F5">
+            <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
+        </Border>
+    </Grid>
+</Window>

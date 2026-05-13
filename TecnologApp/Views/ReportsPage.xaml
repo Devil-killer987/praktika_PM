@@ -1,0 +1,57 @@
+﻿<Page x:Class="TecnologApp.Views.ReportsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="ReportsPage"
+      Background="#F5F5F5">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Отчеты и аналитика" 
+                   FontSize="28" FontWeight="Bold" Margin="0,0,0,20"/>
+
+        <!-- Выбор отчета и период -->
+        <Border Grid.Row="1" Background="White" CornerRadius="10" 
+                Padding="15" Margin="0,0,0,15">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                    <TextBlock Text="Тип отчета:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <ComboBox x:Name="cmbReportType" Width="200" Height="30"
+                              SelectionChanged="CmbReportType_SelectionChanged">
+                        <ComboBoxItem Content="По партиям" IsSelected="True"/>
+                        <ComboBoxItem Content="По отклонениям"/>
+                        <ComboBoxItem Content="По качеству"/>
+                        <ComboBoxItem Content="По использованию рецептур"/>
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Период:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <DatePicker x:Name="dpFromDate" Width="120" Height="30"/>
+                    <TextBlock Text="—" VerticalAlignment="Center" Margin="5,0"/>
+                    <DatePicker x:Name="dpToDate" Width="120" Height="30"/>
+                    <Button x:Name="btnGenerate" Content="Сформировать" 
+                            Width="120" Height="35" Margin="20,0,0,0"
+                            Background="#2196F3" Foreground="White"
+                            Click="BtnGenerate_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- Результат отчета -->
+        <DataGrid x:Name="dgReport" Grid.Row="2" 
+                  AutoGenerateColumns="True" 
+                  IsReadOnly="True"
+                  RowHeaderWidth="0"
+                  Height="450"
+                  AlternatingRowBackground="#F9F9F9"/>
+
+        <TextBlock x:Name="txtInfo" Grid.Row="3" 
+                   Foreground="Gray" Margin="0,10,0,0" FontSize="12"/>
+    </Grid>
+</Page>

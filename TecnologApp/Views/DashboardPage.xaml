@@ -1,0 +1,118 @@
+﻿<Page x:Class="TecnologApp.Views.DashboardPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="DashboardPage"
+      Background="#F5F5F5">
+
+    <ScrollViewer>
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Заголовок -->
+            <TextBlock Grid.Row="0" Text="Панель управления" 
+                       FontSize="28" FontWeight="Bold" Margin="0,0,0,20"/>
+
+            <!-- Карточки со статистикой -->
+            <WrapPanel Grid.Row="1" Margin="0,0,0,20">
+                <!-- Активные продукты -->
+                <Border Background="#2196F3" CornerRadius="10" 
+                        Width="200" Height="110" Margin="0,0,15,15">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock x:Name="txtActiveProducts" Text="0" 
+                                   FontSize="32" FontWeight="Bold" 
+                                   Foreground="White" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Активных продуктов" 
+                                   Foreground="White" FontSize="13" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Активные рецептуры -->
+                <Border Background="#4CAF50" CornerRadius="10" 
+                        Width="200" Height="110" Margin="0,0,15,15">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock x:Name="txtActiveRecipes" Text="0" 
+                                   FontSize="32" FontWeight="Bold" 
+                                   Foreground="White" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Активных рецептур" 
+                                   Foreground="White" FontSize="13" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Активные техкарты -->
+                <Border Background="#FF9800" CornerRadius="10" 
+                        Width="200" Height="110" Margin="0,0,15,15">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock x:Name="txtActiveTechCards" Text="0" 
+                                   FontSize="32" FontWeight="Bold" 
+                                   Foreground="White" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Активных техкарт" 
+                                   Foreground="White" FontSize="13" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Заказы в работе -->
+                <Border Background="#9C27B0" CornerRadius="10" 
+                        Width="200" Height="110" Margin="0,0,15,15">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock x:Name="txtOrdersInProgress" Text="0" 
+                                   FontSize="32" FontWeight="Bold" 
+                                   Foreground="White" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Заказов в работе" 
+                                   Foreground="White" FontSize="13" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Партии в производстве -->
+                <Border Background="#00BCD4" CornerRadius="10" 
+                        Width="200" Height="110" Margin="0,0,15,15">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock x:Name="txtBatchesInProduction" Text="0" 
+                                   FontSize="32" FontWeight="Bold" 
+                                   Foreground="White" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Партий в производстве" 
+                                   Foreground="White" FontSize="13" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Партии с отклонениями -->
+                <Border Background="#F44336" CornerRadius="10" 
+                        Width="200" Height="110" Margin="0,0,15,15">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock x:Name="txtBatchesWithDeviations" Text="0" 
+                                   FontSize="32" FontWeight="Bold" 
+                                   Foreground="White" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Партий с отклонениями" 
+                                   Foreground="White" FontSize="13" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Ожидают контроля -->
+                <Border Background="#FF5722" CornerRadius="10" 
+                        Width="200" Height="110" Margin="0,0,15,15">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock x:Name="txtPendingQualityTests" Text="0" 
+                                   FontSize="32" FontWeight="Bold" 
+                                   Foreground="White" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Ожидают контроля" 
+                                   Foreground="White" FontSize="13" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Заблокированные партии -->
+                <Border Background="#795548" CornerRadius="10" 
+                        Width="200" Height="110" Margin="0,0,15,15">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock x:Name="txtBlockedBatches" Text="0" 
+                                   FontSize="32" FontWeight="Bold" 
+                                   Foreground="White" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Заблокированных партий" 
+                                   Foreground="White" FontSize="13" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+            </WrapPanel>
+        </Grid>
+    </ScrollViewer>
+</Page>
