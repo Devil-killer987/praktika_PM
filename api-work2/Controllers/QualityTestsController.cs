@@ -1,10 +1,7 @@
-﻿
-using api_work2.Models;
-using System;
+﻿using System;
 using System.Linq;
-using System.Net;
 using System.Web.Http;
-using System.Web.Http.Description;
+using api_work2.Models;
 
 namespace Api_work.Controllers
 {
@@ -13,35 +10,94 @@ namespace Api_work.Controllers
     {
         private AgroControlEntities db = new AgroControlEntities();
 
-        // GET: api/qualitytests
-        public IQueryable<quality_tests> Getquality_tests()
-        {
-            return db.quality_tests;
-        }
-
-        // GET: api/qualitytests/pending
+        // GET: api/qualitytests/pending?type=raw_material
         [HttpGet]
         [Route("pending")]
-        public IHttpActionResult GetPendingTests()
+        public IHttpActionResult GetPendingTests(string type = null)
         {
-            var tests = db.quality_tests
-                .Where(qt => qt.status == "in_progress")
+            if (type == "raw_material")
+            {
+                // Возвращаем партии сырья, требующие контроля
+                var materials = db.batch_materials
+                    .Where(bm => !db.quality_tests.Any(qt => qt.material_id == bm.material_id && qt.status == "completed"))
+                    .Select(bm => new
+                    {
+                        id = bm.material_id,
+                        batch_number = bm.lot_number,
+                        material_name = bm.materials.name,
+                        supplier = bm.materials.supplier,
+                        receipt_date = DateTime.Now,
+                        quantity = bm.quantity_used_kg,
+                        test_status = "pending"
+                    })
+                    .Distinct()
+                    .ToList();
+
+                return Ok(materials);
+            }
+            else if (type == "finished_product")
+            {
+                // Возвращаем партии готовой продукции, требующие контроля
+                var batches = db.batches
+                    .Where(b => b.status == "completed" && !db.quality_tests.Any(qt => qt.batch_id == b.id))
+                    .Select(b => new
+                    {
+                        b.id,
+                        b.batch_number,
+                        product_name = b.production_orders.recipes.products.name,
+                        order_number = b.production_orders.order_number,
+                        production_date = b.end_time,
+                        quantity = b.actual_quantity_kg,
+                        quality_status = "pending"
+                    })
+                    .ToList();
+
+                return Ok(batches);
+            }
+
+            // Все испытания
+            var allTests = db.quality_tests
                 .Select(qt => new
                 {
                     qt.id,
-                    qt.batch_id,
-                    batch_number = qt.batches.batch_number,
-                    qt.material_id,
                     qt.sample_type,
                     qt.analysis_date,
-                    qt.status
+                    qt.status,
+                    qt.decision,
+                    object_name = qt.batch_id != null ? qt.batches.batch_number : "Сырье"
                 })
                 .ToList();
 
-            return Ok(tests);
+            return Ok(allTests);
         }
 
-        // GET: api/qualitytests/batch/5
+        // GET: api/qualitytests/{id}
+        [HttpGet]
+        [Route("{id}")]
+        public IHttpActionResult GetTestById(int id)
+        {
+            var test = db.quality_tests
+                .Where(qt => qt.id == id)
+                .Select(qt => new
+                {
+                    qt.id,
+                    qt.sample_type,
+                    qt.analysis_date,
+                    qt.status,
+                    qt.decision,
+                    qt.analyst_comment,
+                    batch_number = qt.batch_id != null ? qt.batches.batch_number : null,
+                    material_name = qt.material_id != null ? "Материал" : null
+                })
+                .FirstOrDefault();
+
+            if (test == null)
+                return NotFound();
+
+            return Ok(test);
+        }
+
+        // GET: api/qualitytests/batch/{batchId}
         [HttpGet]
         [Route("batch/{batchId}")]
         public IHttpActionResult GetTestsByBatch(int batchId)
@@ -70,46 +126,13 @@ namespace Api_work.Controllers
             return Ok(tests);
         }
 
-        // GET: api/qualitytests/5
-        [ResponseType(typeof(quality_tests))]
-        public IHttpActionResult Getquality_tests(int id)
-        {
-            quality_tests quality_tests = db.quality_tests.Find(id);
-            if (quality_tests == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(quality_tests);
-        }
-
-        // POST: api/qualitytests
-        [ResponseType(typeof(quality_tests))]
-        public IHttpActionResult Postquality_tests([FromBody] quality_tests quality_tests)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            quality_tests.analysis_date = DateTime.Now;
-            quality_tests.status = "in_progress";
-            db.quality_tests.Add(quality_tests);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = quality_tests.id }, quality_tests);
-        }
-
         // POST: api/qualitytests/create
         [HttpPost]
         [Route("create")]
-        [ResponseType(typeof(quality_tests))]
         public IHttpActionResult CreateTest([FromBody] CreateTestRequest request)
         {
             if (request == null)
-            {
-                return BadRequest("Request cannot be null");
-            }
+                return BadRequest("Request is null");
 
             var test = new quality_tests
             {
@@ -123,109 +146,59 @@ namespace Api_work.Controllers
             db.quality_tests.Add(test);
             db.SaveChanges();
 
-            return Ok(new { id = test.id, message = "Test created successfully" });
+            return Ok(new { id = test.id, message = "Test created" });
         }
 
-        // POST: api/qualitytests/5/complete
-        [HttpPost]
-        [Route("{id}/complete")]
-        [ResponseType(typeof(string))]
-        public IHttpActionResult CompleteTest(int id, [FromBody] CompleteTestRequest request)
-        {
-            var test = db.quality_tests.Find(id);
-            if (test == null)
-            {
-                return NotFound();
-            }
-
-            test.status = "completed";
-            if (request != null)
-            {
-                test.analyst_comment = request.Comment;
-            }
-            db.SaveChanges();
-
-            return Ok($"Test {id} completed");
-        }
-
-        // POST: api/qualitytests/5/decision
+        // POST: api/qualitytests/{id}/decision
         [HttpPost]
         [Route("{id}/decision")]
-        [ResponseType(typeof(string))]
         public IHttpActionResult MakeDecision(int id, [FromBody] DecisionRequest request)
         {
             if (request == null)
-            {
-                return BadRequest("Request cannot be null");
-            }
+                return BadRequest("Request is null");
 
             var test = db.quality_tests.Find(id);
             if (test == null)
-            {
                 return NotFound();
-            }
 
             test.decision = request.Decision;
             test.analyst_comment = request.Comment;
             test.status = "completed";
             db.SaveChanges();
 
-            // Update batch status based on decision
+            // Обновляем статус партии если есть
             if (test.batch_id.HasValue)
             {
                 var batch = db.batches.Find(test.batch_id.Value);
                 if (batch != null)
                 {
-                    if (request.Decision == "approved")
-                    {
-                        batch.status = "completed";
-                        batch.end_time = DateTime.Now;
-                    }
-                    else if (request.Decision == "blocked")
-                    {
-                        batch.status = "blocked";
-                    }
+                    batch.status = request.Decision == "approved" ? "completed" : "blocked";
                     db.SaveChanges();
                 }
             }
 
-            return Ok(new { decision = request.Decision, message = $"Decision: {request.Decision}" });
+            return Ok(new { message = $"Decision: {request.Decision}" });
         }
 
-        // PUT: api/qualitytests/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult Putquality_tests(int id, quality_tests quality_tests)
+        // GET: api/qualitytests
+        [HttpGet]
+        [Route("")]
+        public IHttpActionResult GetAllTests()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            var tests = db.quality_tests
+                .OrderByDescending(qt => qt.analysis_date)
+                .Select(qt => new
+                {
+                    qt.id,
+                    qt.sample_type,
+                    qt.analysis_date,
+                    qt.status,
+                    qt.decision,
+                    object_name = qt.batch_id != null ? qt.batches.batch_number : "Сырье"
+                })
+                .ToList();
 
-            if (id != quality_tests.id)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(quality_tests).State = System.Data.Entity.EntityState.Modified;
-            db.SaveChanges();
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // DELETE: api/qualitytests/5
-        [ResponseType(typeof(quality_tests))]
-        public IHttpActionResult Deletequality_tests(int id)
-        {
-            quality_tests quality_tests = db.quality_tests.Find(id);
-            if (quality_tests == null)
-            {
-                return NotFound();
-            }
-
-            db.quality_tests.Remove(quality_tests);
-            db.SaveChanges();
-
-            return Ok(quality_tests);
+            return Ok(tests);
         }
 
         protected override void Dispose(bool disposing)
@@ -238,7 +211,6 @@ namespace Api_work.Controllers
         }
     }
 
-    // Request DTOs
     public class CreateTestRequest
     {
         public int? BatchId { get; set; }
@@ -246,14 +218,9 @@ namespace Api_work.Controllers
         public string SampleType { get; set; }
     }
 
-    public class CompleteTestRequest
-    {
-        public string Comment { get; set; }
-    }
-
     public class DecisionRequest
     {
-        public string Decision { get; set; } // approved, blocked
+        public string Decision { get; set; }
         public string Comment { get; set; }
     }
 }

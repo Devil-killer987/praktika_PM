@@ -1,0 +1,66 @@
+﻿<Window x:Class="OperatorMD.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="АгроКонтроль - Аппаратчик" 
+        Height="700" Width="1200" 
+        WindowStartupLocation="CenterScreen">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Боковое меню -->
+        <Border Grid.Column="0" Background="DarkViolet">
+            <StackPanel>
+                <Border Background="DarkOliveGreen" Padding="10">
+                    <TextBlock Text="АгроКонтроль" 
+                               FontSize="18" FontWeight="Bold" 
+                               Foreground="White" HorizontalAlignment="Center"/>
+                </Border>
+
+                <Border Background="DarkRed" Padding="10" Margin="0,10,0,10">
+                    <StackPanel>
+                        <TextBlock x:Name="txtUserName" Text="Оператор" 
+                                   Foreground="White" FontSize="14" FontWeight="Bold"/>
+                        <TextBlock x:Name="txtShiftLine" Text="Смена А | Линия №1" 
+                                   Foreground="#BDC3C7" FontSize="12"/>
+                    </StackPanel>
+                </Border>
+
+                <Button x:Name="btnActiveBatches" Content="🏭 Активные партии" 
+                        FontSize="14" Height="45" HorizontalAlignment="Stretch"
+                        Cursor="Hand" Click="BtnActiveBatches_Click"
+                        Background="Transparent" Foreground="White" BorderThickness="0"/>
+
+                <Button x:Name="btnProgram" Content="📋 Программа партии" 
+                        FontSize="14" Height="45" HorizontalAlignment="Stretch"
+                        Cursor="Hand" Click="BtnProgram_Click"
+                        Background="Transparent" Foreground="White" BorderThickness="0"/>
+
+                <Button x:Name="btnExtruder" Content="⚙ Экструдер LIVE" 
+                        FontSize="14" Height="45" HorizontalAlignment="Stretch"
+                        Cursor="Hand" Click="BtnExtruder_Click"
+                        Background="Transparent" Foreground="White" BorderThickness="0"/>
+
+                <Button x:Name="btnReportProblem" Content="⚠ Сообщить о проблеме" 
+                        FontSize="14" Height="45" HorizontalAlignment="Stretch"
+                        Cursor="Hand" Click="BtnReportProblem_Click"
+                        Background="Transparent" Foreground="White" BorderThickness="0"/>
+
+                <Border Height="1" Background="Blue" Margin="10,20,10,10"/>
+
+                <Button x:Name="btnLogout" Content="🚪 Выход" 
+                        FontSize="14" Height="45" HorizontalAlignment="Stretch"
+                        Cursor="Hand" Click="BtnLogout_Click"
+                        Background="Transparent" Foreground="White" BorderThickness="0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Основная область -->
+        <Border Grid.Column="1" Background="#F5F5F5">
+            <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
+        </Border>
+    </Grid>
+</Window>

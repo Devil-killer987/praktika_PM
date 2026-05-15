@@ -210,6 +210,8 @@
     <Compile Include="Controllers\BatchesController.cs" />
     <Compile Include="Controllers\BatchStepsController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
+    <Compile Include="Controllers\DeviationsController.cs" />
+    <Compile Include="Controllers\EquipmentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\ProductionOrdersController.cs" />
@@ -220,6 +222,7 @@
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\TechCardsController.cs" />
     <Compile Include="Controllers\TechCardStepsController.cs" />
+    <Compile Include="Controllers\TestResultsController.cs" />
     <Compile Include="Controllers\usersController.cs" />
     <Compile Include="DTOs\BatchDto.cs" />
     <Compile Include="DTOs\QualityTestDto.cs" />

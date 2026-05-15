@@ -1,0 +1,168 @@
+﻿<Page x:Class="OperatorMD.Views.BatchProgramPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="BatchProgramPage"
+      Background="#F5F5F5">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Информация о партии -->
+        <Border Grid.Row="0" Background="White" CornerRadius="10" 
+                Padding="15" Margin="0,0,0,15">
+            <StackPanel>
+                <TextBlock x:Name="txtBatchInfo" FontSize="18" FontWeight="Bold"/>
+                <TextBlock x:Name="txtProductInfo" FontSize="14" Foreground="Gray"/>
+                <TextBlock x:Name="txtStatusInfo" FontSize="12" Margin="0,5,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Основная область: список шагов + рабочая область -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Список шагов -->
+            <Border Grid.Column="0" Background="White" CornerRadius="10" 
+                    Padding="10" Margin="0,0,15,0">
+                <StackPanel>
+                    <TextBlock Text="Шаги технологического процесса" 
+                               FontWeight="Bold" Margin="0,0,0,10"/>
+                    <ItemsControl x:Name="itemsSteps">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Padding="10" Margin="0,0,0,5" 
+                                        CornerRadius="5" Cursor="Hand"
+                                        MouseLeftButtonUp="StepItem_Click"
+                                        Tag="{Binding}"
+                                        Background="#F5F5F5">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding step_order}" 
+                                                       FontWeight="Bold" Margin="0,0,5,0"/>
+                                            <TextBlock Text="{Binding step_name}" 
+                                                       FontWeight="Bold"/>
+                                        </StackPanel>
+                                        <TextBlock Text="⚠ Отклонение" 
+                                                   FontSize="10" Foreground="Red"
+                                                   Visibility="Collapsed"
+                                                   Margin="15,3,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- Рабочая область выбранного шага -->
+            <Border Grid.Column="1" Background="White" CornerRadius="10" 
+                    Padding="20">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel x:Name="panelStepDetails">
+                        <!-- Заголовок шага -->
+                        <TextBlock x:Name="txtStepTitle" FontSize="20" FontWeight="Bold"/>
+                        <TextBlock x:Name="txtStepInstruction" FontSize="13" 
+                                   Foreground="Gray" Margin="0,5,0,15"/>
+
+                        <!-- Плановые параметры -->
+                        <Border Background="#F0F0F0" CornerRadius="8" 
+                                Padding="15" Margin="0,0,0,15">
+                            <StackPanel>
+                                <TextBlock Text="Плановые параметры" 
+                                           FontWeight="Bold" Margin="0,0,0,10"/>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Температура:"/>
+                                    <TextBlock x:Name="txtPlannedTemp" Grid.Row="0" Grid.Column="1"/>
+
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Длительность:"/>
+                                    <TextBlock x:Name="txtPlannedDuration" Grid.Row="1" Grid.Column="1"/>
+
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Давление:"/>
+                                    <TextBlock x:Name="txtPlannedPressure" Grid.Row="2" Grid.Column="1"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Фактические параметры -->
+                        <Border x:Name="borderActual" Background="#E3F2FD" CornerRadius="8" 
+                                Padding="15" Margin="0,0,0,15"
+                                Visibility="Collapsed">
+                            <StackPanel>
+                                <TextBlock Text="Фактические параметры" 
+                                           FontWeight="Bold" Margin="0,0,0,10"/>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Температура (°C):"/>
+                                    <TextBox x:Name="txtActualTemp" Grid.Row="0" Grid.Column="1" 
+                                             Width="150" Height="30" HorizontalAlignment="Left"/>
+
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Длительность (мин):"/>
+                                    <TextBox x:Name="txtActualDuration" Grid.Row="1" Grid.Column="1" 
+                                             Width="150" Height="30" HorizontalAlignment="Left"/>
+
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Давление (бар):"/>
+                                    <TextBox x:Name="txtActualPressure" Grid.Row="2" Grid.Column="1" 
+                                             Width="150" Height="30" HorizontalAlignment="Left"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Комментарий при отклонении -->
+                        <Border x:Name="borderComment" Background="#FFF3E0" CornerRadius="8" 
+                                Padding="15" Margin="0,0,0,15"
+                                Visibility="Collapsed">
+                            <StackPanel>
+                                <TextBlock Text="Отклонение" FontWeight="Bold" 
+                                           Foreground="Red" Margin="0,0,0,10"/>
+                                <TextBlock Text="Комментарий оператора:" Margin="0,0,0,5"/>
+                                <TextBox x:Name="txtComment" Height="60" 
+                                         TextWrapping="Wrap" AcceptsReturn="True"/>
+                                <ComboBox x:Name="cmbSeverity" Width="150" Height="30" Margin="0,10,0,0">
+                                    <ComboBoxItem Content="Предупреждение" IsSelected="True"/>
+                                    <ComboBoxItem Content="Критическое"/>
+                                </ComboBox>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Кнопки действий -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
+                            <Button x:Name="btnStartStep" Content="Начать шаг" 
+                                    Width="120" Height="40" 
+                                    Background="Cyan" Foreground="White"
+                                    Click="BtnStartStep_Click"/>
+                            <Button x:Name="btnCompleteStep" Content="Завершить шаг" 
+                                    Width="120" Height="40" Margin="10,0,0,0"
+                                    Background="#2196F3" Foreground="White"
+                                    Click="BtnCompleteStep_Click" Visibility="Collapsed"/>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>
